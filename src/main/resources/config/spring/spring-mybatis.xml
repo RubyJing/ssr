@@ -16,10 +16,10 @@
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
     <!-- 开启aop代理-->
-    <aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true" />
-    <context:component-scan base-package="com.ssm.aspect">
+    <!--<aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true" />-->
+    <!--<context:component-scan base-package="com.ssm.aspect">-->
 
-    </context:component-scan>
+    <!--</context:component-scan>-->
 
     <!-- 引入数据库配置文件 -->
     <bean id="propertyConfigurer"
@@ -63,6 +63,22 @@
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 线程池 -->
+    <bean id="threadPoolTaskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <!-- 线程池维护线程的最少数量 -->
+        <property name="corePoolSize" value="5"/>
+        <!-- 线程池维护线程的最大数量 -->
+        <property name="maxPoolSize" value="10"/>
+        <!-- 允许的空闲时间 -->
+        <property name="keepAliveSeconds" value="200" />
+        <!-- 缓存队列 -->
+        <property name="queueCapacity" value="25"/>
+        <!-- 对拒绝task的处理策略 -->
+        <property name="rejectedExecutionHandler">
+            <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />
+        </property>
     </bean>
 
     <!-- 使用注解定义事务 -->
